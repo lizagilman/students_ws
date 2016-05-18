@@ -4,18 +4,14 @@ var express = require('express');
 var app = express();
 // var routes = require('./routes/index');
 
-app.get('/',function(req,res){
-    var message = {"massage": "Welcome to students grades API!\n " +
-    "You can use the following functions:\n" +
-    "1. get all students - /students" +
-    "\n 2. get student's grades by id - /grades-by-student-id/id . id is an integer (1,2,3...)" +
-    "\n3. get top 3 best students of a year - excellence-by-year/year. For example use year 2013."}
-    res.status(20).send(message)
+
+app.get('/',function(req, res){
+    res.sendfile('./students-api.html');
 });
 
 
 // get all students
-app.get('/students',function(req,res){
+app.get('/students',function(req, res){
   res.status(200).json(students_grades);
 });
 
@@ -55,8 +51,8 @@ app.get('/grades-by-student-id/:id',function(req,res){
 });
 
 
-// get top 3 best students of a year
-app.get('/excellence-by-year/:year',function(req,res){
+// get top 3 grades of given year
+app.get('/excellence-by-year/:year', function(req, res){
   var status = 200;
     var year = parseInt(req.params.year,10);
     var message;
@@ -79,7 +75,7 @@ app.get('/excellence-by-year/:year',function(req,res){
 
 
 app.get('*', function(req, res){
-  var message =  {"message":"Bad Request, no such function"};
+  var message =  {"message":"undefined request"};
   res.send(message, 400);
 });
 
@@ -89,12 +85,10 @@ app.listen(process.env.PORT || 3000, function(){
 });
 
 
-
-function best_students_by_year(input_year) {
+function best_students_by_year(input_year){
     var grades = [];
     var students = students_grades.students;
     for(var i = 0; i < students.length; i++){
-      //  console.log(i);
         var courses = students_grades.students[i].courses;
         var grades_sum = 0;
         for(var j=0; j<courses.length; j++){
@@ -117,8 +111,7 @@ function best_students_by_year(input_year) {
 }
 
 
-function bubbleSort(array)
-{
+function bubbleSort(array){
     var swapped;
     do {
         swapped = false;
@@ -132,6 +125,4 @@ function bubbleSort(array)
         }
     } while (swapped);
 }
-
-//module.exports = app;
 
